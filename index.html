@@ -224,15 +224,15 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                 <div>
-                    <div class="text-3xl font-bold text-white mb-1">10K+</div>
+                    <div class="text-3xl font-bold text-white mb-1">10+</div>
                     <div class="text-sm text-gray-400 font-medium tracking-wide uppercase">Servers</div>
                 </div>
                 <div>
-                    <div class="text-3xl font-bold text-white mb-1">2M+</div>
+                    <div class="text-3xl font-bold text-white mb-1">500+</div>
                     <div class="text-sm text-gray-400 font-medium tracking-wide uppercase">Users</div>
                 </div>
                 <div>
-                    <div class="text-3xl font-bold text-white mb-1">5M+</div>
+                    <div class="text-3xl font-bold text-white mb-1">100+</div>
                     <div class="text-sm text-gray-400 font-medium tracking-wide uppercase">Images Gen</div>
                 </div>
                 <div>
@@ -435,39 +435,33 @@
 
     <!-- Mobile Menu Script -->
     <script>
-        // Configuratie voor alle links (Pas deze URL's aan naar wens)
         const voxylisLinks = {
             botInvite: "https://discord.com/oauth2/authorize?client_id=1476323084716867595",
             supportServer: "https://dsc.gg/voxylis",
-            termsOfService: "/tos.html",
-            privacyPolicy: "/privacy.html"
+            termsOfService: "/terms.html?t",
+            privacyPolicy: "/terms.html?p"
         };
 
-        // Koppel de links aan de HTML elementen zodra de pagina is geladen
         document.addEventListener('DOMContentLoaded', () => {
             const bindLink = (id, url) => {
                 const el = document.getElementById(id);
                 if (el) el.href = url;
             };
 
-            // Navbar & Mobile Menu
             bindLink('nav-invite', voxylisLinks.botInvite);
             bindLink('nav-support', voxylisLinks.supportServer);
             bindLink('mobile-invite', voxylisLinks.botInvite);
             bindLink('mobile-support', voxylisLinks.supportServer);
 
-            // Hero & CTA
             bindLink('hero-invite', voxylisLinks.botInvite);
             bindLink('hero-support', voxylisLinks.supportServer);
             bindLink('cta-invite', voxylisLinks.botInvite);
 
-            // Footer
             bindLink('footer-tos', voxylisLinks.termsOfService);
             bindLink('footer-privacy', voxylisLinks.privacyPolicy);
             bindLink('footer-support', voxylisLinks.supportServer);
             bindLink('footer-discord', voxylisLinks.supportServer);
 
-            // Dynamisch Copyright Jaartal (2025-<huidig jaar>)
             const currentYear = new Date().getFullYear();
             const yearSpan = document.getElementById('current-year');
             if (yearSpan && currentYear > 2025) {
@@ -484,7 +478,6 @@
             }
         });
 
-        // Add blur effect to nav on scroll
         window.addEventListener('scroll', function() {
             const nav = document.querySelector('nav');
             if (window.scrollY > 20) {
