@@ -1,1 +1,498 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voxylis | The Ultimate AI Discord Bot</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        voxylis: {
+                            dark: '#0B1120',
+                            card: '#111827',
+                            primary: '#0ea5e9', // Light Blue
+                            secondary: '#38bdf8', // Lighter Blue
+                            accent: '#06b6d4' // Cyan
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0B1120;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        .glass-nav {
+            background: rgba(11, 17, 32, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(14, 165, 233, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(14, 165, 233, 0.2);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #38bdf8, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+        }
+        .bg-gradient-primary:hover {
+            background: linear-gradient(135deg, #0284c7, #0891b2);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-voxylis-primary selection:text-white relative">
+
+    <!-- Background Glow Effects -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-voxylis-primary/20 rounded-full mix-blend-screen filter blur-[100px] animate-blob"></div>
+        <div class="absolute top-[20%] right-[-10%] w-96 h-96 bg-voxylis-accent/20 rounded-full mix-blend-screen filter blur-[100px] animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-blue-600/20 rounded-full mix-blend-screen filter blur-[100px] animate-blob animation-delay-4000"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <img src="voxylis.png" alt="Voxylis" class="w-10 h-10 rounded-xl shadow-lg shadow-voxylis-primary/30 object-cover">
+                    <span class="font-bold text-2xl tracking-tight">Voxylis</span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-gray-300 hover:text-white transition-colors font-medium">Features</a>
+                    <a href="#pricing" class="text-gray-300 hover:text-white transition-colors font-medium">Pricing</a>
+                    <a href="#commands" class="text-gray-300 hover:text-white transition-colors font-medium">Commands</a>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="#" id="nav-support" class="text-gray-300 hover:text-white transition-colors font-medium flex items-center gap-2">
+                        <i class="fa-brands fa-discord"></i> Support
+                    </a>
+                    <a href="#" id="nav-invite" class="bg-gradient-primary text-white px-6 py-2.5 rounded-full font-semibold shadow-lg shadow-voxylis-primary/30 transition-transform hover:scale-105">
+                        Add to Discord
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button class="text-gray-300 hover:text-white focus:outline-none" id="mobile-menu-btn">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu (Hidden by default) -->
+        <div class="md:hidden hidden glass-nav border-t border-white/5" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col items-center">
+                <a href="#features" class="block px-3 py-2 text-gray-300 font-medium">Features</a>
+                <a href="#pricing" class="block px-3 py-2 text-gray-300 font-medium">Pricing</a>
+                <a href="#" id="mobile-support" class="block px-3 py-2 text-voxylis-primary font-medium"><i class="fa-brands fa-discord mr-2"></i>Support Server</a>
+                <a href="#" id="mobile-invite" class="mt-4 block w-[90%] text-center bg-gradient-primary text-white px-6 py-3 rounded-full font-semibold">Add to Discord</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Text Content -->
+                <div class="text-center lg:text-left order-2 lg:order-1">
+                    <div class="inline-block px-4 py-1.5 rounded-full glass-card mb-6 text-sm font-medium text-voxylis-primary border-voxylis-primary/20">
+                        <i class="fa-solid fa-sparkles mr-2"></i> Now with Advanced Image Generation
+                    </div>
+                    <h1 class="text-5xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
+                        Meet <span class="text-gradient">Voxylis.</span><br>
+                        Your Server's AI.
+                    </h1>
+                    <p class="text-lg text-gray-400 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        Transform your Discord community with intelligent conversations, breathtaking image generation, and endless fun. The best part? It's completely free to use.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <a href="#" id="hero-invite" class="w-full sm:w-auto bg-gradient-primary text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg shadow-voxylis-primary/40 transition-all hover:-translate-y-1 flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-plus"></i> Invite Voxylis
+                        </a>
+                        <a href="#" id="hero-support" class="w-full sm:w-auto glass-card text-white px-8 py-4 rounded-full font-bold text-lg transition-all hover:-translate-y-1 flex items-center justify-center gap-3">
+                            <i class="fa-brands fa-discord text-[#5865F2]"></i> Join Support
+                        </a>
+                    </div>
+                    
+                    <div class="mt-10 flex items-center justify-center lg:justify-start gap-6 text-gray-500 text-sm font-medium">
+                        <div class="flex items-center gap-2"><i class="fa-solid fa-check text-voxylis-primary"></i> Free to use</div>
+                        <div class="flex items-center gap-2"><i class="fa-solid fa-check text-voxylis-primary"></i> 24/7 Uptime</div>
+                        <div class="flex items-center gap-2"><i class="fa-solid fa-check text-voxylis-primary"></i> Easy Setup</div>
+                    </div>
+                </div>
+                
+                <!-- Hero Image/Graphic -->
+                <div class="order-1 lg:order-2 flex justify-center lg:justify-end relative">
+                    <!-- Decorative Circle behind -->
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-tr from-voxylis-primary to-voxylis-accent rounded-full blur-[80px] opacity-50"></div>
+                    
+                    <!-- Floating Bot Card Mockup -->
+                    <div class="relative w-full max-w-md animate-float">
+                        <div class="glass-card rounded-3xl p-6 border-t border-l border-white/20 shadow-2xl relative overflow-hidden">
+                            <!-- Header -->
+                            <div class="flex items-center gap-4 mb-6 pb-6 border-b border-white/10">
+                                <img src="voxylis.png" alt="Voxylis" class="w-14 h-14 rounded-2xl shadow-lg object-cover">
+                                <div>
+                                    <h3 class="font-bold text-xl flex items-center gap-2">Voxylis <span class="bg-blue-500 text-white text-[10px] px-2 py-0.5 rounded uppercase font-bold tracking-wider">Bot</span></h3>
+                                    <p class="text-gray-400 text-sm">Playing Artificial Intelligence</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Mock Chat -->
+                            <div class="space-y-4">
+                                <div class="flex gap-3">
+                                    <img src="voxylis.png" alt="Voxylis" class="w-8 h-8 rounded-full flex-shrink-0 object-cover">
+                                    <div class="w-full">
+                                        <p class="font-medium text-sm text-voxylis-primary">Voxylis <span class="text-xs text-gray-500 ml-1">Today at 2:30 PM</span></p>
+                                        <p class="text-sm mt-1 mb-2">Here is your generated image! ✨</p>
+                                        <div class="w-full h-40 bg-gray-800 rounded-xl overflow-hidden relative border border-white/10">
+                                            <!-- CSS gradient placeholder for the image -->
+                                            <div class="absolute inset-0 bg-gradient-to-br from-indigo-900 via-slate-800 to-cyan-900"></div>
+                                            <div class="absolute inset-0 flex items-center justify-center text-white/20">
+                                                <i class="fa-solid fa-image text-4xl"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-10 border-y border-white/5 bg-white/[0.02]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-3xl font-bold text-white mb-1">10K+</div>
+                    <div class="text-sm text-gray-400 font-medium tracking-wide uppercase">Servers</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-white mb-1">2M+</div>
+                    <div class="text-sm text-gray-400 font-medium tracking-wide uppercase">Users</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-white mb-1">5M+</div>
+                    <div class="text-sm text-gray-400 font-medium tracking-wide uppercase">Images Gen</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-white mb-1">99.9%</div>
+                    <div class="text-sm text-gray-400 font-medium tracking-wide uppercase">Uptime</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-voxylis-primary font-semibold tracking-wide uppercase mb-2">Capabilities</h2>
+                <h3 class="text-3xl md:text-5xl font-bold mb-6">Everything you need in one intelligent bot.</h3>
+                <p class="text-gray-400 text-lg">Voxylis brings the power of advanced AI models directly into your Discord channels, making your server more active and engaging.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-card rounded-3xl p-8 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-voxylis-primary/10 rounded-full blur-[40px] group-hover:bg-voxylis-primary/20 transition-all duration-500"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-6 text-2xl text-voxylis-primary border border-white/10 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-regular fa-comments"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3 text-white">Smart AI Chat</h4>
+                    <p class="text-gray-400 leading-relaxed">Engage in natural, context-aware conversations. Ask questions, get help with coding, or just have a fun chat. Voxylis understands it all.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-card rounded-3xl p-8 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-voxylis-accent/10 rounded-full blur-[40px] group-hover:bg-voxylis-accent/20 transition-all duration-500"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-6 text-2xl text-voxylis-accent border border-white/10 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-solid fa-palette"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3 text-white">Image Generation</h4>
+                    <p class="text-gray-400 leading-relaxed">Turn your words into stunning visual art in seconds. From anime style to photorealism, if you can imagine it, Voxylis can generate it.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-card rounded-3xl p-8 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-[40px] group-hover:bg-blue-500/20 transition-all duration-500"></div>
+                    <div class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-6 text-2xl text-blue-400 border border-white/10 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3 text-white">Lightning Fast</h4>
+                    <p class="text-gray-400 leading-relaxed">Built on a highly optimized infrastructure, Voxylis delivers instant replies and fast image rendering without keeping your users waiting.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing/Economy Section -->
+    <section id="pricing" class="py-24 relative bg-black/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <div>
+                    <h2 class="text-voxylis-primary font-semibold tracking-wide uppercase mb-2">Economy</h2>
+                    <h3 class="text-3xl md:text-5xl font-bold mb-6">Free forever. <br>Cheap power-ups.</h3>
+                    <p class="text-gray-400 text-lg mb-6 leading-relaxed">
+                        We believe AI should be accessible to everyone. Get <span class="text-white font-semibold">10 standard credits</span> instantly, plus an extra <span class="text-voxylis-primary font-semibold">10 daily credits</span> just for being a member of our Discord server!
+                    </p>
+                    <p class="text-gray-400 text-lg mb-8 leading-relaxed">
+                        You can also earn free credits through invite rewards, giveaways, and server boost perks. Need more juice? Grab a pack below!
+                    </p>
+                    
+                    <ul class="space-y-4 mb-10">
+                        <li class="flex items-center gap-3">
+                            <div class="w-6 h-6 rounded-full bg-voxylis-primary/20 flex items-center justify-center text-voxylis-primary text-sm">
+                                <i class="fa-solid fa-gift"></i>
+                            </div>
+                            <span class="text-gray-300">Daily Free Credits & Rewards</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div class="w-6 h-6 rounded-full bg-voxylis-primary/20 flex items-center justify-center text-voxylis-primary text-sm">
+                                <i class="fa-solid fa-unlock"></i>
+                            </div>
+                            <span class="text-gray-300">No locked features behind paywalls</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div class="w-6 h-6 rounded-full bg-voxylis-primary/20 flex items-center justify-center text-voxylis-primary text-sm">
+                                <i class="fa-solid fa-tag"></i>
+                            </div>
+                            <span class="text-gray-300">Insanely cheap top-ups</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Pricing Cards Visual -->
+                <div class="relative">
+                    <!-- Background Glow -->
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-voxylis-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
+                    
+                    <div class="space-y-4 relative z-10">
+                        
+                        <!-- Starter -->
+                        <div class="glass-card rounded-2xl p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-l-4 border-l-voxylis-primary hover:-translate-y-1 transition-transform">
+                            <div>
+                                <h4 class="text-xl font-bold text-white mb-1">Starter Pack</h4>
+                                <p class="text-sm text-gray-400">100 Credits</p>
+                            </div>
+                            <div class="text-3xl font-extrabold text-white">$0.49</div>
+                        </div>
+
+                        <!-- Pro -->
+                        <div class="glass-card rounded-2xl p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-l-4 border-l-voxylis-accent bg-voxylis-primary/5 hover:-translate-y-1 transition-transform">
+                            <div>
+                                <h4 class="text-xl font-bold text-white mb-1">Pro Pack</h4>
+                                <p class="text-sm text-gray-400">500 Credits <span class="bg-voxylis-primary/20 text-voxylis-primary text-xs px-2 py-0.5 rounded ml-2">Popular</span></p>
+                            </div>
+                            <div class="text-3xl font-extrabold text-white">$1.99</div>
+                        </div>
+
+                        <!-- Infinite -->
+                        <div class="glass-card rounded-2xl p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-l-4 border-l-purple-500 hover:-translate-y-1 transition-transform">
+                            <div>
+                                <h4 class="text-xl font-bold text-white mb-1">Infinite Pack</h4>
+                                <p class="text-sm text-gray-400">2000 Credits</p>
+                            </div>
+                            <div class="text-3xl font-extrabold text-white">$7.49</div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 relative overflow-hidden">
+        <!-- Abstract shapes -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-voxylis-primary/10 to-transparent"></div>
+        </div>
+        
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <h2 class="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">Ready to level up your server?</h2>
+            <p class="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">Join thousands of communities already using Voxylis to create engaging, smart, and creative environments.</p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#" id="cta-invite" class="w-full sm:w-auto bg-gradient-primary text-white px-10 py-5 rounded-full font-bold text-lg shadow-xl shadow-voxylis-primary/40 transition-transform hover:scale-105 flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-robot"></i> Invite Voxylis Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#050A14] border-t border-white/5 pt-16 pb-8 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                
+                <!-- Brand -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="voxylis.png" alt="Voxylis" class="w-8 h-8 rounded-lg shadow-md object-cover">
+                        <span class="font-bold text-xl tracking-tight text-white">Voxylis</span>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed max-w-sm">
+                        The ultimate AI companion for your Discord server. Bringing seamless chat intelligence and creative image generation directly to your community.
+                    </p>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Navigation</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-500 hover:text-voxylis-primary transition-colors text-sm">Home</a></li>
+                        <li><a href="#features" class="text-gray-500 hover:text-voxylis-primary transition-colors text-sm">Features</a></li>
+                        <li><a href="#pricing" class="text-gray-500 hover:text-voxylis-primary transition-colors text-sm">Pricing</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-voxylis-primary transition-colors text-sm">Commands</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal / Connect -->
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Legal & Support</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" id="footer-tos" class="text-gray-500 hover:text-white transition-colors text-sm">Terms of Service</a></li>
+                        <li><a href="#" id="footer-privacy" class="text-gray-500 hover:text-white transition-colors text-sm">Privacy Policy</a></li>
+                        <li><a href="#" id="footer-support" class="text-gray-500 hover:text-[#5865F2] transition-colors text-sm flex items-center gap-2 mt-4"><i class="fa-brands fa-discord"></i> Support Server</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-600 text-sm">© 2025<span id="current-year"></span> Voxylis Bot. All rights reserved.</p>
+                <div class="flex space-x-4">
+                    <a href="#" id="footer-discord" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#5865F2] transition-all">
+                        <i class="fa-brands fa-discord"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        // Configuratie voor alle links (Pas deze URL's aan naar wens)
+        const voxylisLinks = {
+            botInvite: "https://discord.com/oauth2/authorize?client_id=1476323084716867595",
+            supportServer: "https://dsc.gg/voxylis",
+            termsOfService: "/tos.html",
+            privacyPolicy: "/privacy.html"
+        };
+
+        // Koppel de links aan de HTML elementen zodra de pagina is geladen
+        document.addEventListener('DOMContentLoaded', () => {
+            const bindLink = (id, url) => {
+                const el = document.getElementById(id);
+                if (el) el.href = url;
+            };
+
+            // Navbar & Mobile Menu
+            bindLink('nav-invite', voxylisLinks.botInvite);
+            bindLink('nav-support', voxylisLinks.supportServer);
+            bindLink('mobile-invite', voxylisLinks.botInvite);
+            bindLink('mobile-support', voxylisLinks.supportServer);
+
+            // Hero & CTA
+            bindLink('hero-invite', voxylisLinks.botInvite);
+            bindLink('hero-support', voxylisLinks.supportServer);
+            bindLink('cta-invite', voxylisLinks.botInvite);
+
+            // Footer
+            bindLink('footer-tos', voxylisLinks.termsOfService);
+            bindLink('footer-privacy', voxylisLinks.privacyPolicy);
+            bindLink('footer-support', voxylisLinks.supportServer);
+            bindLink('footer-discord', voxylisLinks.supportServer);
+
+            // Dynamisch Copyright Jaartal (2025-<huidig jaar>)
+            const currentYear = new Date().getFullYear();
+            const yearSpan = document.getElementById('current-year');
+            if (yearSpan && currentYear > 2025) {
+                yearSpan.textContent = '-' + currentYear;
+            }
+        });
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            var menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // Add blur effect to nav on scroll
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+</body>
+</html>
